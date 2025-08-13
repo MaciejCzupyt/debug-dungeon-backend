@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Tag, Project, Comment
+
+from .models import Comment, Project, Tag
 
 # Register your models here.
 

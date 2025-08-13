@@ -1,7 +1,13 @@
 from django.contrib.auth.models import User
-from .models import Tag, Project, Comment
 from rest_framework import permissions, viewsets
-from .serializers import UserSerializer, TagSerializer, ProjectSerializer, CommentSerializer
+
+from .models import Comment, Project, Tag
+from .serializers import (
+    CommentSerializer,
+    ProjectSerializer,
+    TagSerializer,
+    UserSerializer,
+)
 
 
 class UserViewSet(viewsets.ModelViewSet):
