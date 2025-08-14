@@ -1,21 +1,18 @@
 # Debug Dungeon
 
-> The backend of a project for listing, creating and commenting on educational programming mini-projects.
+The backend of a project for listing, creating and commenting on educational programming mini-projects.
 
-TODO: add screenshots from the index view and projects details view
+[//]: # (## Lint)
 
-## Lint
+[//]: # (## Build)
 
-## Build
+[//]: # (## Deploy)
 
-## Deploy
-
-## License
+[//]: # (## License)
 
 # TODO
 
 Project management:
-
 
 Implementation:
 
@@ -23,7 +20,7 @@ Implementation:
 - [x] Create serializers with rest-framework
 - [x] Create views
 - [x] Plug views to URLs
-- 
+- [ ] Add screenshots from the index view and projects details view in readme
 - [ ] Create a view for user management - creating accounts, without the ability to list other users
 - [x] Fix ability to create user without password
 - [ ] Update serializers/models to include the owner username in the JSON instead of user id
