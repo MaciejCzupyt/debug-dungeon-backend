@@ -17,6 +17,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    #user = serializers.StringRelatedField()
+
     class Meta:
         model = Project
         fields = "__all__"
