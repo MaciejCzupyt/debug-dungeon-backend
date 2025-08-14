@@ -7,7 +7,7 @@ from .models import Comment, Project, Tag
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username"]
+        fields = ["username", "password"]
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -23,6 +23,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    # user = serializers.StringRelatedField()
+
     class Meta:
         model = Comment
         fields = "__all__"
