@@ -1,6 +1,6 @@
 # Debug Dungeon
 
-> Database of educational mini-projects.
+> The backend of a project for listing, creating and commenting on educational programming mini-projects.
 
 TODO: add screenshots from the index view and projects details view
 
