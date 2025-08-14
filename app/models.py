@@ -21,6 +21,9 @@ class Project(models.Model):
     shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)
     tags = models.ManyToManyField(Tag, related_name="projects")
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    # TODO import timestamp automatically set during creation, figure out datetime.now()
+    # timestamp = models.DateTimeField(default=datetime.now())
+
 
     def __str__(self):
         return self.title
