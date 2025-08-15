@@ -26,5 +26,6 @@ Implementation:
 - [ ] Update serializers/models to include the owner username in the JSON instead of user id
 - [ ] Make sure that only the owner can delete their resources (probably add validation in a view)
 
-- [ ] Set timestamp to "now" on save always
+- [x] Set timestamp to "now" on save always
 - [ ] Update resource owners on save too
+- [x] Fix POST username/password, password isn't being hashed
