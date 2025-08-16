@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
+from backend.permissions import IsOwnerOrReadOnly
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -14,7 +15,7 @@ from .serializers import (
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
 
     def retrieve(self, request, *args, **kwargs):
         return Response(
@@ -38,7 +39,7 @@ class TagViewSet(viewsets.ModelViewSet):
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     '''
         TODO
@@ -52,7 +53,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     '''
         TODO
