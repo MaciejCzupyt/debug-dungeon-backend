@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
+from rest_framework.response import Response
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -14,6 +15,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def retrieve(self, request, *args, **kwargs):
+        return Response(
+            {"detail": "Retrieving users by ID is unavailable"},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    def list(self, request, *args, **kwargs):
+        return Response(
+            {"detail": "Retrieving list of users is unavailable"},
+            status=status.HTTP_404_NOT_FOUND
+        )
 
 
 class TagViewSet(viewsets.ModelViewSet):
