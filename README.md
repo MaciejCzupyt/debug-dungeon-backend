@@ -23,9 +23,8 @@ Implementation:
 - [ ] Add screenshots from the index view and projects details view in readme
 - [ ] Create a view for user management - creating accounts, without the ability to list other users
 - [x] Fix ability to create user without password
-- [ ] Update serializers/models to include the owner username in the JSON instead of user id
+- [x] Update serializers/models to include the owner username in the JSON instead of user id
 - [ ] Make sure that only the owner can delete their resources (probably add validation in a view)
-
 - [x] Set timestamp to "now" on save always
 - [ ] Update resource owners on save too
 - [x] Fix POST username/password, password isn't being hashed
