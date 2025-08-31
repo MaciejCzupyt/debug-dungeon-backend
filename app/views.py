@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from backend.permissions import IsOwnerOrReadOnly
+from django.http import JsonResponse
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -63,14 +65,9 @@ class CommentViewSet(viewsets.ModelViewSet):
         but when trying to create a new instance of the object we cannot specify the user and he remains null
     '''
 
-    def destroy(self, request, *args, **kwargs):
-        # but now we're gonna do some additional checks BEFORE that
 
-        # TODO:
-        # 1. we need to know what user sent the request
-        # 2. we need to know if the user is an owner of all the comments this request refers to
-        # 3. if NOT then we return 401 early
-        print("WE ARE DELETING, ARENT WE??")
+# method for setting csrf token
+@ensure_csrf_cookie
+def get_csrf(request):
+    return JsonResponse({"detail": "CSRF cookie set"})
 
-        # this should not change the behaviour
-        super().destroy(request, *args, **kwargs)
