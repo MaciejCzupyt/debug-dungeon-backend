@@ -17,6 +17,7 @@ class Project(models.Model):
     }
 
     title = models.CharField(max_length=50, unique=True)
+    # TODO probably add a repository_link
     description = models.TextField()
     shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)
     tags = models.ManyToManyField(Tag, related_name="projects")
