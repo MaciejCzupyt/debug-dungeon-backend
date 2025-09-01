@@ -39,6 +39,33 @@ def current_user(request):
     """
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
+
+
+class LoginView(APIView):
+    authentication_classes = []  # disable DRF session auth for this view
+    permission_classes = []      # allow anyone to call
+
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            return JsonResponse({"detail": "Login successful"}, status=200)
+        return JsonResponse({"detail": "Invalid credentials"}, status=400)
+
+
+class LogoutView(APIView):
+    authentication_classes = []  # disable DRF auth check
+    permission_classes = []      # allow anyone
+
+    def post(self, request):
+        logout(request)
+        return JsonResponse({"detail": "Logout successful"}, status=200)
+
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
@@ -77,4 +104,3 @@ class CommentViewSet(viewsets.ModelViewSet):
 @ensure_csrf_cookie
 def get_csrf(request):
     return JsonResponse({"detail": "CSRF cookie set"})
-
