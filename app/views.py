@@ -31,6 +31,14 @@ class UserViewSet(viewsets.ModelViewSet):
         )
 
 
+@api_view(['GET'])
+@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+def current_user(request):
+    """
+    Returns the currently logged-in user
+    """
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer

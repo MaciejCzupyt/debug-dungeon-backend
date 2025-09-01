@@ -11,6 +11,7 @@ router.register(r"comments", views.CommentViewSet)
 
 
 urlpatterns = [
+    path("users/me", views.current_user),
     path("", include(router.urls)),
     path("csrf/", views.get_csrf)
 ]
