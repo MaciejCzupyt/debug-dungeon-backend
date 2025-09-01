@@ -1,9 +1,12 @@
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
-from backend.permissions import IsOwnerOrReadOnly
+from backend.permissions import IsOwnerOrReadOnly, IsSelfOrReadOnly
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework.decorators import api_view, permission_classes
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.views import APIView
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -17,13 +20,9 @@ from .serializers import (
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated, IsSelfOrReadOnly]
 
-    def retrieve(self, request, *args, **kwargs):
-        return Response(
-            {"detail": "Retrieving users by ID is unavailable"},
-            status=status.HTTP_404_NOT_FOUND
-        )
+    lookup_field = 'username'
 
     def list(self, request, *args, **kwargs):
         return Response(
