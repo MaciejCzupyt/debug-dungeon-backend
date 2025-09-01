@@ -7,8 +7,11 @@ from .models import Comment, Project, Tag
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["username", "password"]
-        extra_kwargs = {"password": {"write_only": True}}
+        fields = ["username", "password", 'date_joined']
+        extra_kwargs = {
+            "password": {"write_only": True},
+            "date_joined": {"read_only": True}
+        }
 
     def create(self, validated_data):
         user = User(
