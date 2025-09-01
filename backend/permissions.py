@@ -12,3 +12,15 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
             return True
 
         return obj.user == request.user
+
+
+class IsSelfOrReadOnly(permissions.BasePermission):
+    """
+    Only allow users to edit themselves.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        return obj == request.user
