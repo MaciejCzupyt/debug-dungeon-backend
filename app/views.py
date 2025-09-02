@@ -42,7 +42,7 @@ def current_user(request):
 
 
 class LoginView(APIView):
-    authentication_classes = []  # disable DRF session auth for this view
+    # authentication_classes = []  # disable DRF auth check
     permission_classes = []      # allow anyone to call
 
     def post(self, request):
@@ -58,8 +58,8 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
-    authentication_classes = []  # disable DRF auth check
-    permission_classes = []      # allow anyone
+    # authentication_classes = []  # disable DRF auth check
+    permission_classes = []      # allow anyone to call
 
     def post(self, request):
         logout(request)
