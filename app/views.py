@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from backend.permissions import IsOwnerOrReadOnly, IsSelfOrReadOnly
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, action
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 
@@ -81,13 +81,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
-    '''
-        TODO
-        overwrite create methods so that the user is set automatically or we can bypass this issue
-        user = serializers.StringRelatedField()
-        currently when we specify this in serializers.py, retrieving the model means we get a user string instead of id,
-        but when trying to create a new instance of the object we cannot specify the user and he remains null
-    '''
+    @action(detail=True, methods=['get'])
+    def comments(self, request, pk=None):
+        project = self.get_object()
+        comments = project.comment_set.all()
+        serializer = CommentSerializer(comments, many=True)
+        return Response(serializer.data)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
