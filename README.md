@@ -16,15 +16,11 @@ Project management:
 
 Implementation:
 
-- [x] Create new models
-- [x] Create serializers with rest-framework
-- [x] Create views
-- [x] Plug views to URLs
 - [ ] Add screenshots from the index view and projects details view in readme
-- [x] Create a view for user management - creating accounts, without the ability to list other users
-- [x] Fix ability to create user without password
-- [x] Update serializers/models to include the owner username in the JSON instead of user id
-- [x] Make sure that only the owner can delete their resources (probably add validation in a view)
-- [x] Set timestamp to "now" on save always
-- [x] Update resource owners on save too
-- [x] Fix POST username/password, password isn't being hashed
+- [ ] Tags
+  - [ ] Create new Tag when a non-existing tag is posted along a new project
+- [ ] Validation
+  - [ ] Project
+  - [ ] Comments
+  - [ ] User
+  - [ ] Tag
