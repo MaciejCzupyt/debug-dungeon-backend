@@ -23,10 +23,22 @@ class UserViewSet(viewsets.ModelViewSet):
 
     lookup_field = 'username'
 
+    @action(detail=True, methods=['get'])
+    def all(self, request, username=None):
+        user = self.get_object()
+        projects = user.project_set.all()
+        comments = user.comment_set.all()
+
+        return Response({
+            "user": UserSerializer(user).data,
+            "projects": ProjectSerializer(projects, many=True).data,
+            "comments": CommentSerializer(comments, many=True).data,
+        })
+
     def get_permissions(self):
         if self.action == 'create':
             return [permissions.AllowAny()]
-        return [permissions.IsAuthenticated, IsSelfOrReadOnly]
+        return [permissions.IsAuthenticatedOrReadOnly(), IsSelfOrReadOnly()]
 
     def list(self, request, *args, **kwargs):
         return Response(
