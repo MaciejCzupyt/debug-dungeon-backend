@@ -100,6 +100,25 @@ class ProjectViewSet(viewsets.ModelViewSet):
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)
 
+    def get_queryset(self):
+        queryset = Project.objects.all()
+
+        user = self.request.query_params.get('user')
+        shirt_size = self.request.query_params.get('shirt_size')
+        tags = self.request.query_params.get('tags')
+
+        if user:
+            queryset = queryset.filter(user__username=user)
+        if shirt_size:
+            queryset = queryset.filter(shirt_size=shirt_size)
+        if tags:
+            tag_list = tags.split(',')
+            queryset = queryset.filter(tags__name__in=tag_list).distinct()
+
+        return queryset
+
+
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
