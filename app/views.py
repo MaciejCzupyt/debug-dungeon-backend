@@ -7,6 +7,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework.decorators import api_view, permission_classes, action
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
+from django.db.models import Q
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -103,10 +104,18 @@ class ProjectViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Project.objects.all()
 
+        search = self.request.query_params.get('search')
         user = self.request.query_params.get('user')
         shirt_size = self.request.query_params.get('shirt_size')
         tags = self.request.query_params.get('tags')
 
+        if search:
+            queryset = queryset.filter(
+                Q(title__icontains=search) |
+                Q(description__icontains=search) |
+                Q(user__username__icontains=search) |
+                Q(tags__name__icontains=search)
+            ).distinct()
         if user:
             queryset = queryset.filter(user__username=user)
         if shirt_size:
