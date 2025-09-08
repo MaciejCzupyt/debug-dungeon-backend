@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view, permission_classes, action
 from django.contrib.auth import authenticate, login, logout
 from rest_framework.views import APIView
 from django.db.models import Q
+from app.pagination import ProjectPagination
 
 from .models import Comment, Project, Tag
 from .serializers import (
@@ -103,6 +104,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+    pagination_class = ProjectPagination
 
     def create(self, request, *args, **kwargs):
         tags = request.data.get("tags", [])
