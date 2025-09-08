@@ -78,6 +78,7 @@ class LogoutView(APIView):
     # authentication_classes = []  # disable DRF auth check
     permission_classes = []      # allow anyone to call
 
+
     def post(self, request):
         logout(request)
         return JsonResponse({"detail": "Logout successful"}, status=200)
@@ -89,10 +90,30 @@ class TagViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
+def _ensure_tags_exist(tags):
+    if not tags:
+        return
+    for t in tags:
+        name = str(t).strip()
+        if name:
+            Tag.objects.get_or_create(name=name)
+
+
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
+
+    def create(self, request, *args, **kwargs):
+        tags = request.data.get("tags", [])
+        _ensure_tags_exist(tags)
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        tags = request.data.get("tags", None)
+        if tags is not None:
+            _ensure_tags_exist(tags)
+        return super().update(request, *args, **kwargs)
 
     @action(detail=True, methods=['get'])
     def comments(self, request, pk=None):
@@ -125,8 +146,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(tags__name__in=tag_list).distinct()
 
         return queryset
-
-
 
 
 class CommentViewSet(viewsets.ModelViewSet):
