@@ -17,10 +17,10 @@ class Project(models.Model):
     }
 
     title = models.CharField(max_length=50, unique=True)
-    # TODO probably add a repository_link
+    repository_link = models.URLField(blank=True)
     description = models.TextField()
     shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES)
-    tags = models.ManyToManyField(Tag, related_name="projects")
+    tags = models.ManyToManyField(Tag, related_name="projects", blank=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -31,7 +31,7 @@ class Project(models.Model):
 
 class Comment(models.Model):
     content = models.TextField()
-    repository_link = models.URLField()
+    repository_link = models.URLField(blank=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
