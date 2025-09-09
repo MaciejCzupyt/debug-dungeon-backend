@@ -8,6 +8,8 @@ dependencies = [
     "django>=5.2.5",
     "django-cors-headers>=4.8.0",
     "djangorestframework>=3.16.1",
+    "factory-boy>=3.3.3",
+    "faker>=37.6.0",
 ]
 
 [dependency-groups]
