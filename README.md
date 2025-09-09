@@ -19,8 +19,8 @@ Implementation:
 - [ ] Add screenshots from the index view and projects details view in readme
 - [x] Endpoints
   - [x] User + Projects + Comments
-- [ ] Tags
-  - [ ] Create new Tag when a non-existing tag is posted along a new project
+- [x] Tags
+  - [x] Create new Tag when a non-existing tag is posted along a new project
 - [ ] Validation
   - [ ] Project
   - [ ] Comments
