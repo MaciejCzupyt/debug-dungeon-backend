@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import Comment, Project, Tag
@@ -36,6 +37,17 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
+        read_only_fields = fields  # tag creation happens during project creation
+
+    def validate(self, data):
+        instance = Tag(**data)
+
+        try:
+            instance.clean()
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)
+
+        return data
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -51,6 +63,22 @@ class ProjectSerializer(serializers.ModelSerializer):
             validated_data['user'] = request.user
         return super().create(validated_data)
 
+    def validate(self, data):
+        instance = Project(
+            title=data.get("title"),
+            description=data.get("description"),
+            repository_link=data.get("repository_link"),
+            shirt_size=data.get("shirt_size"),
+            user=self.context["request"].user
+        )
+
+        try:
+            instance.clean()
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)
+
+        return data
+
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
@@ -64,4 +92,14 @@ class CommentSerializer(serializers.ModelSerializer):
         if request and hasattr(request, 'user'):
             validated_data['user'] = request.user
         return super().create(validated_data)
+
+    def validate(self, data):
+        instance = Comment(**data)
+
+        try:
+            instance.clean()
+        except ValidationError as e:
+            raise serializers.ValidationError(e.message_dict if hasattr(e, "message_dict") else e.messages)
+
+        return data
 

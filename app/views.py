@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from backend.permissions import IsOwnerOrReadOnly, IsSelfOrReadOnly
@@ -96,7 +97,11 @@ def _ensure_tags_exist(tags):
         return
     for t in tags:
         name = str(t).strip()
-        if name:
+        if not name:
+            raise ValidationError("Tag cannot be empty")
+        if not name.isalnum():
+            raise ValidationError("Tag name must be alphanumeric")
+        else:
             Tag.objects.get_or_create(name=name)
 
 
