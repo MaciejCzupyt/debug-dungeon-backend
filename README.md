@@ -21,8 +21,8 @@ Implementation:
   - [x] User + Projects + Comments
 - [x] Tags
   - [x] Create new Tag when a non-existing tag is posted along a new project
-- [ ] Validation
-  - [ ] Project
-  - [ ] Comments
-  - [ ] User
-  - [ ] Tag
+- [x] Validation
+  - [x] Project
+  - [x] Comments
+  - [x] User
+  - [x] Tag
