@@ -37,7 +37,9 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
-        read_only_fields = fields  # tag creation happens during project creation
+        extra_kwargs = {
+            "name": {"read_only": True},
+        }
 
     def validate(self, data):
         instance = Tag(**data)
