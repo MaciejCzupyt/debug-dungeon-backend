@@ -10,6 +10,7 @@ dependencies = [
     "djangorestframework>=3.16.1",
     "factory-boy>=3.3.3",
     "faker>=37.6.0",
+    "uvicorn>=0.35.0",
 ]
 
 [dependency-groups]
