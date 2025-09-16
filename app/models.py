@@ -33,9 +33,9 @@ class Project(models.Model):
 
     def clean(self):
         if len(self.title.strip()) < 3:
-            raise ValidationError("Title must be at least 3 characters long.")
+            raise ValidationError("Title must be at least 3 characters long")
         if len(self.description.strip()) < 10:
-            raise ValidationError("Description must be at least 10 characters long.")
+            raise ValidationError("Description must be at least 10 characters long")
         if self.repository_link and not self.repository_link.startswith(("http://", "https://")):
             raise ValidationError("Repository link must start with http:// or https://")
 
