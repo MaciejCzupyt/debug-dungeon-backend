@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # import backend.middleware
 
@@ -22,13 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-($f(8nn6bmy&o#yor-2v1sz8(j(*j*on-nditz044c#a3#p$kp"
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-($f(8nn6bmy&o#yor-2v1sz8(j(*j*on-nditz044c#a3#p$kp")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() in {"1", "true", "yes"}
 
-ALLOWED_HOSTS = []
-
+# hosts and origins
+_default_host = os.getenv("SERVER_NAME", "localhost")
+ALLOWED_HOSTS = [
+    _default_host,
+    os.getenv("ADDITIONAL_HOST", ""),
+]
+ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
 
 # Application definition
 
@@ -47,14 +53,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    # "backend.middleware.SuppressBrowserAuthPopupMiddleware"
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -143,12 +147,23 @@ REST_FRAMEWORK = {
     ]
 }
 
+# CORS/CSRF
+_frontend_origin = os.getenv("FRONTEND_ORIGIN", f"http://{_default_host}")
+_frontend_origin_https = os.getenv("FRONTEND_ORIGIN_HTTPS", f"https://{_default_host}")
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
+    _frontend_origin,
+    _frontend_origin_https,
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:3000"
+    _frontend_origin,
+    _frontend_origin_https,
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# cookie/security flags toggle depending on HTTPS
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
