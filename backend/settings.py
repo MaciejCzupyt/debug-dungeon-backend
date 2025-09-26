@@ -31,9 +31,12 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-($f(8nn6bmy&o#yor-2
 DEBUG = os.getenv("DJANGO_DEBUG", "false").lower() in {"1", "true", "yes"}
 
 # hosts and origins
-_default_host = os.getenv("SERVER_NAME", "localhost")
+_default_host = os.getenv("SERVER_NAME", "localhost").strip()
 ALLOWED_HOSTS = [
     _default_host,
+    f"www.{_default_host}",
+    f"{_default_host}:443",
+    f"www.{_default_host}:443",
     os.getenv("ADDITIONAL_HOST", ""),
 ]
 ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
