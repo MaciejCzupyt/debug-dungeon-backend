@@ -54,6 +54,8 @@ class TagSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)
+    created = serializers.DateTimeField(format="%d %b %H:%M")
+    modified = serializers.DateTimeField(format="%d %b %H:%M")
 
     class Meta:
         model = Project
@@ -84,6 +86,8 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+    created = serializers.DateTimeField(format="%d %b %H:%M")
+    modified = serializers.DateTimeField(format="%d %b %H:%M")
 
     class Meta:
         model = Comment
